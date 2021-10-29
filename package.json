@@ -1,0 +1,11 @@
+{
+  "name": "culebrita",
+  "version": "1.0.0",
+  "description": "juego de culebra",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "isaias chavez",
+  "license": "ISC"
+}

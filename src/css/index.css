@@ -1,0 +1,98 @@
+#canvas {
+     border: 1px solid #bbb;
+     border-radius: 6px;
+}
+
+.contadores {
+     position: absolute;
+     top: 0;
+     right: 0;
+     min-width: 20rem;
+     min-height: 10rem;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+
+#contador {
+     font-weight: bold;
+     font-size: 2rem;
+     margin: 1rem;
+}
+
+.container {
+     width: 100vw;
+     height: 100vh;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+
+.container-buttons {
+     padding-top: 1rem;
+     display: flex;
+}
+
+.container-canvas {
+     display: flex;
+     flex-direction: column;
+}
+
+.button {
+     border: none;
+     padding: 0.5rem 1rem;
+     min-width: 10rem;
+     width: 10rem;
+     border-radius: 6px;
+     text-transform: uppercase;
+     font-size: 0.75rem;
+     font-weight: bold;
+     color: #101010;
+     box-shadow: 1px 1px 1px 1px #bbb;
+     cursor: pointer;
+}
+
+.button:hover {
+     transform: scale(1.01)
+}
+
+body html {
+     padding: 0;
+     margin: 0;
+}
+
+
+/* Modal */
+
+.container-modal-instrucciones {
+     position: fixed;
+     top: 0;
+     bottom: 0;
+     left: 0;
+     right: 0;
+     background-color: rgba(0, 0, 0, 0.3);
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+
+.instrucciones {
+     padding: 3rem;
+     min-width: 20vw;
+     width: 50vw;
+     min-height: 50vh;
+     height: 50vh;
+     border-radius: 6px;
+     background: white;
+}
+
+.controles {
+     display: flex;
+     justify-content: center;
+}
+
+.teclas {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
