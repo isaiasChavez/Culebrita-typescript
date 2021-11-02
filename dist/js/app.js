@@ -1,7 +1,6 @@
 const ModalContainer = document.querySelector('.container-modal-instrucciones');
 const $reiniciar = document.querySelector("#reiniciar");
 const $iniciar = document.querySelector("#iniciar");
-const $detener = document.querySelector("#detener");
 class ModalControles {
     constructor(container) {
         this.container = container;
@@ -74,13 +73,12 @@ const App = () => {
         const lienzo = document.querySelector('#canvas');
         const tablero = document.querySelector('#contador');
         const context = lienzo.getContext('2d');
-        context.fillStyle = '#000';
+        context.fillStyle = '#406343';
         const juego = new Juego(lienzo, tablero);
         $iniciar.addEventListener('click', () => {
             juego.iniciar();
-        });
-        $detener.addEventListener('click', () => {
-            juego.detener();
+            $reiniciar.classList.toggle("hidden");
+            $iniciar.classList.toggle("hidden");
         });
         $reiniciar.addEventListener('click', () => {
             juego.reiniciar();

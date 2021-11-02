@@ -3,7 +3,6 @@ const ModalContainer: HTMLDivElement = document.querySelector(
 )
 const $reiniciar =  document.querySelector("#reiniciar")
 const $iniciar =  document.querySelector("#iniciar")
-const $detener =  document.querySelector("#detener")
 
 class ModalControles {
   boton: HTMLButtonElement
@@ -81,15 +80,16 @@ const App = () => {
     const lienzo: HTMLCanvasElement = document.querySelector('#canvas')
     const tablero: HTMLDivElement = document.querySelector('#contador')
     const context: CanvasRenderingContext2D = lienzo.getContext('2d')
-    context.fillStyle = '#000'
+    context.fillStyle = '#406343'
     const juego = new Juego(lienzo, tablero)
     
     $iniciar.addEventListener('click',()=>{
+
       juego.iniciar()
+      $reiniciar.classList.toggle("hidden")
+      $iniciar.classList.toggle("hidden")
     })
-    $detener.addEventListener('click',()=>{
-      juego.detener()
-    })
+   
     $reiniciar.addEventListener('click',()=>{
       juego.reiniciar()
     })

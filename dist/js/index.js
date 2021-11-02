@@ -14,6 +14,7 @@ var Direcciones;
     Direcciones["derecha"] = "DERECHA";
     Direcciones["izquierda"] = "IZQUERDA";
 })(Direcciones || (Direcciones = {}));
+const imagenTierra = "https://c.pxhere.com/photos/43/5a/concrete_gray_background_texture_concrete_wall_wall-1063450.jpg!d";
 class ObjetoDibujable {
     constructor() {
         this.ancho = 10;
@@ -144,6 +145,7 @@ class Culebra {
             }
             const haChocadoConsigoMismo = eslabonesRestantes.some(eslabon => eslabon.posicionXi === this.ultimoEslabon.posicionXi && eslabon.posicionYi === this.ultimoEslabon.posicionYi);
             console.log({ haChocadoConsigoMismo });
+            return { haChocadoConsigoMismo };
         };
         this.morder = (raton) => {
             let haMordido = false;
@@ -152,6 +154,7 @@ class Culebra {
             if (esMismaX && esMismaY) {
                 raton.saltar();
                 haMordido = true;
+                this.mapa.playMordisco();
                 this.agregarEslabon();
             }
             return haMordido;
@@ -192,6 +195,16 @@ class Mapa {
         this.alto = canvas.height;
         this.contexto = canvas.getContext('2d');
         this.canvas = canvas;
+        this.imagenMapa = new Image(); // Create new img element
+        this.imagenMapa.src = imagenTierra;
+        this.imagenMapa.onload = () => this.dibujarMapa();
+        this.audio = document.getElementById("audio");
+    }
+    playMordisco() {
+        this.audio.play();
+    }
+    dibujarMapa() {
+        this.contexto.drawImage(this.imagenMapa, 0, 0);
     }
     dibujarObjeto(objeto) {
         if (objeto instanceof Culebra) {
@@ -258,17 +271,19 @@ class Juego {
                 try {
                     this.interval = setInterval(() => {
                         const mordio = this.culebra.morder(this.raton);
+                        this.mapa.dibujarMapa();
                         this.mapa.dibujarObjeto(this.culebra);
                         this.mapa.dibujarObjeto(this.raton);
                         this.mapa.limpiarMapa();
                         if (mordio) {
                             this.aumentarPunto();
                         }
-                        this.culebra.mover();
+                        const { haChocadoConsigoMismo } = this.culebra.mover();
                         const { haChocado } = this.validarChoqueConMapa(this.culebra);
-                        if (haChocado) {
+                        if (haChocado || haChocadoConsigoMismo) {
                             resolve(true);
                         }
+                        this.mapa.dibujarMapa();
                         this.mapa.dibujarObjeto(this.culebra);
                         this.mapa.dibujarObjeto(this.raton);
                     }, this.frames);
@@ -278,6 +293,7 @@ class Juego {
                 }
             });
         };
+        this.lienzo = lienzo;
         this.mapa = new Mapa(lienzo);
         this.tablero = tablero;
         this.culebra = new Culebra(this.mapa);
@@ -310,6 +326,7 @@ class Juego {
         });
     }
     reiniciar() {
+        this.mapa = new Mapa(this.lienzo);
         this.culebra = new Culebra(this.mapa);
         this.raton = new Raton(this.mapa);
         this.iniciar();
@@ -319,6 +336,9 @@ class Juego {
     detener() {
         clearInterval(this.interval);
         this.removeListeners();
+        this.mapa.contexto.font = '48px serif';
+        this.mapa.contexto.fillStyle = "#fff";
+        this.mapa.contexto.fillText('Se acabó el juego', this.mapa.ancho * 0.175, this.mapa.alto * 0.55);
     }
 }
 Juego.random = (min, max) => {

@@ -7,20 +7,29 @@
      position: absolute;
      top: 0;
      right: 0;
-     min-width: 20rem;
-     min-height: 10rem;
      display: flex;
      justify-content: center;
      align-items: center;
 }
 
+.bg-thirth {
+     background: #32502E;
+}
+
+.bg-primary {
+     background: #082032;
+}
+
+.bg-secondary {
+     background: #FBF4E9;
+}
+
 #contador {
      font-weight: bold;
-     font-size: 2rem;
      margin: 1rem;
 }
 
-.container {
+.container- {
      width: 100vw;
      height: 100vh;
      display: flex;

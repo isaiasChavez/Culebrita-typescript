@@ -9,17 +9,18 @@
     <title>Culebrita</title>
   </head>
   <body>
-    <div class="container">
-      <div class="container-canvas">
-        <canvas width="500" height="500" id="canvas"></canvas>
-        <div class="container-buttons">
-          <button id="iniciar"class="button mx-2">Iniciar</button>
-          <button  id="reiniciar" class="button mx-2">Reiniciar</button>
-          <button id="detener" class="button mx-2">Detener</button>
+    <div class="container- bg-primary">
+      <div class="container-canvas 	">
+        <canvas class="bg-secondary shadow-md" width="700" height="700" id="canvas"></canvas>
+<audio id="audio" src="./src/sound/sfx-eating.mp3"
+       autoplay>
+</audio>        <div class="container-buttons">
+          <button  id="iniciar"class=" bg-white button mx-2">Start</button>
+          <button  id="reiniciar" class="hidden bg-white button mx-2">Restart</button>
         </div>
       </div>
-      <div class="contadores">
-        <span class="contador">Puntos: </span>
+      <div class="contadores text-xl bg-secondary rounded-md    shadow-md w-64  text-black mt-20 mr-20 bg-white h-32">
+        <span class="contador ">Puntos: </span>
         <span id="contador" class="contador">0</span>
       </div>
     </div>

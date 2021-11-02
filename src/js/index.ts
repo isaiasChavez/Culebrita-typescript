@@ -4,6 +4,9 @@ enum Direcciones {
   derecha = 'DERECHA',
   izquierda = 'IZQUERDA'
 }
+const imagenTierra = "https://c.pxhere.com/photos/43/5a/concrete_gray_background_texture_concrete_wall_wall-1063450.jpg!d"
+
+
 
 class ObjetoDibujable {
   ancho: number
@@ -104,7 +107,7 @@ class Culebra {
       this.direccion = direccion
     }
   }
-  mover = () => {
+  mover = ():{haChocadoConsigoMismo:boolean} => {
     const eslabonesRestantes: EslabonCulebra[] = [...this.eslabones]
     if (this.eslabones.length >= 2) {
       let ultimoEslabonTemp: EslabonCulebra = this.eslabones[1]
@@ -187,7 +190,9 @@ class Culebra {
     }
     const haChocadoConsigoMismo = eslabonesRestantes.some(eslabon => eslabon.posicionXi===this.ultimoEslabon.posicionXi&&eslabon.posicionYi===this.ultimoEslabon.posicionYi)
     console.log({haChocadoConsigoMismo})
+    return { haChocadoConsigoMismo}
   }
+
 
   morder = (raton: Raton): boolean => {
     let haMordido = false
@@ -196,6 +201,7 @@ class Culebra {
     if (esMismaX && esMismaY) {
       raton.saltar()
       haMordido = true
+      this.mapa.playMordisco()
       this.agregarEslabon()
     }
     return haMordido
@@ -230,13 +236,26 @@ class Mapa {
   ancho: number
   alto: number
   private canvas: HTMLCanvasElement
-  private contexto: CanvasRenderingContext2D
+  contexto: CanvasRenderingContext2D
+  private imagenMapa:HTMLImageElement
+  private audio:HTMLAudioElement
 
   constructor (canvas: HTMLCanvasElement) {
     this.ancho = canvas.width
     this.alto = canvas.height
     this.contexto = canvas.getContext('2d')
     this.canvas = canvas
+    this.imagenMapa = new Image();   // Create new img element
+    this.imagenMapa.src = imagenTierra
+    this.imagenMapa.onload = ()=>this.dibujarMapa()
+    this.audio = document.getElementById("audio") as HTMLAudioElement
+    
+  }
+  playMordisco(){
+    this.audio.play()
+  }
+  dibujarMapa(){
+      this.contexto.drawImage(this.imagenMapa, 0, 0);
   }
   dibujarObjeto (objeto: Culebra | EslabonCulebra | Raton) {
     if (objeto instanceof Culebra) {
@@ -275,12 +294,14 @@ class Juego {
   culebra: Culebra
   raton: Raton
   mapa: Mapa
+  lienzo: HTMLCanvasElement
   frames: number = 80
   teclas = {}
   interval: number
   puntos: number = 0
   tablero: HTMLDivElement
   constructor (lienzo: HTMLCanvasElement, tablero: HTMLDivElement) {
+    this.lienzo =lienzo
     this.mapa = new Mapa(lienzo)
     this.tablero = tablero
     this.culebra = new Culebra(this.mapa)
@@ -293,6 +314,7 @@ class Juego {
     document.removeEventListener('keypress', this.detectarMovimientoHandler)
   }
   detectarMovimientoHandler = e => {
+
     if (e.key.toLowerCase() === TeclasMovimiento.abajo) {
       this.culebra.cambiarDireccion(Direcciones.abajo)
     }
@@ -305,6 +327,7 @@ class Juego {
     if (e.key.toLowerCase() === TeclasMovimiento.izquierda) {
       this.culebra.cambiarDireccion(Direcciones.izquierda)
     }
+    
   }
   validarChoqueConMapa (culebra: Culebra): { haChocado: boolean } {
     let haChocado = false
@@ -337,6 +360,7 @@ class Juego {
     this.detener()
   }
   reiniciar () {
+    this.mapa = new Mapa(this.lienzo)
     this.culebra = new Culebra(this.mapa)
     this.raton = new Raton(this.mapa)
     this.iniciar()
@@ -346,6 +370,10 @@ class Juego {
   detener () {
     clearInterval(this.interval)
     this.removeListeners()
+  this.mapa.contexto.font = '48px serif';
+  this.mapa.contexto.fillStyle = "#fff"
+  this.mapa.contexto.fillText('Se acabó el juego', this.mapa.ancho*0.175, this.mapa.alto*0.55)
+  
   }
   aumentarPunto = () => {
     ++this.puntos
@@ -364,6 +392,7 @@ class Juego {
       try {
         this.interval = setInterval(() => {
           const mordio: boolean = this.culebra.morder(this.raton)
+          this.mapa.dibujarMapa()
           this.mapa.dibujarObjeto(this.culebra)
           this.mapa.dibujarObjeto(this.raton)
           this.mapa.limpiarMapa()
@@ -371,13 +400,15 @@ class Juego {
           if (mordio) {
             this.aumentarPunto()
           }
-          this.culebra.mover()
+           const {haChocadoConsigoMismo}= this.culebra.mover()
           const { haChocado } = this.validarChoqueConMapa(this.culebra)
-          if (haChocado) {
+          if (haChocado||haChocadoConsigoMismo) {
             resolve(true)
           }
+          this.mapa.dibujarMapa()
           this.mapa.dibujarObjeto(this.culebra)
           this.mapa.dibujarObjeto(this.raton)
+
         }, this.frames)
       } catch (error) {
         reject('Error' + error.message)
