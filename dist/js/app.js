@@ -1,11 +1,18 @@
 const ModalContainer = document.querySelector('.container-modal-instrucciones');
+const $buttonShowInfo = document.querySelector("#button-show-info");
 const $reiniciar = document.querySelector("#reiniciar");
+const $modalRestart = document.querySelector("#modal_restart");
 const $iniciar = document.querySelector("#iniciar");
 class ModalControles {
     constructor(container) {
         this.container = container;
         this.container.innerHTML = this.modal1();
         this.addListenerMod1();
+        $buttonShowInfo.addEventListener('click', () => {
+            this.container.classList.remove("hidden");
+            this.container.innerHTML = this.modal1();
+            this.addListenerMod1();
+        });
     }
     addListenerMod1() {
         this.boton = document.querySelector('#modal1');
@@ -19,12 +26,12 @@ class ModalControles {
         this.boton = document.querySelector('#modal1');
         this.boton.addEventListener('click', () => {
             console.log('Click');
-            this.container.parentNode.removeChild(this.container);
+            this.container.classList.add("hidden");
         });
     }
     modal1() {
         return `
-   <div class="instrucciones shadow-xl">
+   <div class="instrucciones shadow-xl fade-in">
         <div class="flex justify-center text-xl font-bold h-1/6">
           <h3>Juego de la culebra</h3>
         </div>
@@ -32,7 +39,7 @@ class ModalControles {
           <img
                      class="w-64 "
 
-            src="https://media.istockphoto.com/vectors/computer-gamer-keyboard-wasd-keys-vector-illustration-wasd-keys-game-vector-id1193231012?k=20&m=1193231012&s=170667a&w=0&h=_9sYY7kbskV1Cdxido1BphuJRDELyHuqhStVkJwb8CM="
+            src="./images/wasd.jpg"
             alt=""
           />
           <div class="teclas">
@@ -47,14 +54,14 @@ class ModalControles {
     }
     modal2() {
         return `
-   <div class="instrucciones shadow-xl ">
+   <div class="instrucciones shadow-xl fade-in ">
         <div class="flex justify-center text-xl font-bold h-1/6">
           <h3>Juego de la culebra</h3>
         </div>
         <div class="controles  teclas flex justify-around flex-1 h-4/6">
           <img
            class="w-64 "
-            src="https://media.istockphoto.com/vectors/cartoon-black-and-white-illustration-of-snake-vector-id945874222"
+            src="./images/culebra.jpg"
             alt=""
           />
           <div class="teclas ">
@@ -81,6 +88,7 @@ const App = () => {
             $iniciar.classList.toggle("hidden");
         });
         $reiniciar.addEventListener('click', () => {
+            $modalRestart.classList.add("hidden");
             juego.reiniciar();
         });
     }

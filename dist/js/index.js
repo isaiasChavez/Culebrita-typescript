@@ -14,7 +14,7 @@ var Direcciones;
     Direcciones["derecha"] = "DERECHA";
     Direcciones["izquierda"] = "IZQUERDA";
 })(Direcciones || (Direcciones = {}));
-const imagenTierra = "https://c.pxhere.com/photos/43/5a/concrete_gray_background_texture_concrete_wall_wall-1063450.jpg!d";
+const imagenTierra = "../images/verde.jpg";
 class ObjetoDibujable {
     constructor() {
         this.ancho = 10;
@@ -58,7 +58,7 @@ class Raton extends ObjetoDibujable {
     }
     saltar() {
         const nuevoX = Juego.random(0, this.mapa.ancho);
-        const nuevoY = Juego.random(0, this.mapa.ancho - this.alto);
+        const nuevoY = Juego.random(0, this.mapa.alto);
         this.posicionXi = nuevoX - (nuevoX % 50);
         this.posicionYi = nuevoY - (nuevoY % 50);
     }
@@ -235,7 +235,20 @@ class Juego {
         this.teclas = {};
         this.puntos = 0;
         this.agregarListeners = () => {
-            document.addEventListener('keypress', this.detectarMovimientoHandler);
+            document.addEventListener('keypress', e => {
+                if (e.key.toLowerCase() === TeclasMovimiento.abajo) {
+                    this.culebra.cambiarDireccion(Direcciones.abajo);
+                }
+                if (e.key.toLowerCase() === TeclasMovimiento.arriba) {
+                    this.culebra.cambiarDireccion(Direcciones.arriba);
+                }
+                if (e.key.toLowerCase() === TeclasMovimiento.derecha) {
+                    this.culebra.cambiarDireccion(Direcciones.derecha);
+                }
+                if (e.key.toLowerCase() === TeclasMovimiento.izquierda) {
+                    this.culebra.cambiarDireccion(Direcciones.izquierda);
+                }
+            });
         };
         this.removeListeners = () => {
             document.removeEventListener('keypress', this.detectarMovimientoHandler);
@@ -322,6 +335,8 @@ class Juego {
             this.removeListeners();
             this.agregarListeners();
             yield this.renderizar();
+            console.log("Algo");
+            $modalRestart.classList.remove("hidden");
             this.detener();
         });
     }
@@ -336,9 +351,7 @@ class Juego {
     detener() {
         clearInterval(this.interval);
         this.removeListeners();
-        this.mapa.contexto.font = '48px serif';
         this.mapa.contexto.fillStyle = "#fff";
-        this.mapa.contexto.fillText('Se acabó el juego', this.mapa.ancho * 0.175, this.mapa.alto * 0.55);
     }
 }
 Juego.random = (min, max) => {

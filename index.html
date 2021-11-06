@@ -10,23 +10,46 @@
   </head>
   <body>
     <div class="container- bg-primary">
-      <div class="container-canvas 	">
-        <canvas class="bg-secondary shadow-md" width="700" height="700" id="canvas"></canvas>
-<audio id="audio" src="./src/sound/sfx-eating.mp3"
-       autoplay>
-</audio>        <div class="container-buttons">
-          <button  id="iniciar"class=" bg-white button mx-2">Start</button>
-          <button  id="reiniciar" class="hidden bg-white button mx-2">Restart</button>
+      <div
+        class="container-canvas px-4 bg-green-800 shadow-md rounded-md pb-6  relative 	flex  justify-center items-center"
+      >
+      <div class=" fixed top-0 right-0 w-10 bg-white animate-pulse  rounded-full  mr-10 mt-10 cursor-pointer">  
+        <img id="button-show-info" class="" src="./images/info.png" alt="">
+      </div>
+        <div id="modal_restart" class="absolute shadow-md  fade-in w-7/12 bg-white rounded h-2/6 flex flex-col justify-center items-center">
+          <span class="mb-4 font-bold">Iniciar juego</span>
+          <button
+            id="iniciar"
+            class=" bg-blue-500 text-white hidden button mx-2"
+          >
+            Iniciar
+          </button>
+          <button
+            id="reiniciar"
+            class=" bg-white bg-blue-500 text-white button mx-2"
+          >
+            Iniciar
+          </button>
         </div>
+        <div class="h-10 w-full  my-3 flex justify-start items-center">
+          <div class="text-white  ml-4 ">
+            🐭
+            <span id="contador" class="text-md  font-bold">0</span>
+          </div>
+        </div>
+        <canvas
+          class="bg-secondary shadow-md p-1 bg-green-800"
+          width="450"
+          height="400"
+          id="canvas"
+        ></canvas>
+        <audio id="audio" src="./src/sound/sfx-eating.mp3" autoplay></audio>
       </div>
-      <div class="contadores text-xl bg-secondary rounded-md    shadow-md w-64  text-black mt-20 mr-20 bg-white h-32">
-        <span class="contador ">Puntos: </span>
-        <span id="contador" class="contador">0</span>
-      </div>
+    
     </div>
-    <!-- <div class="container-modal-instrucciones">
+   <div class="container-modal-instrucciones">
       
-    </div> -->
+    </div>
     <script src="./dist/js/index.js"></script>
     <script src="./dist/js/app.js"></script>
   </body>
